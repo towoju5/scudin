@@ -1,0 +1,1 @@
+@include('auth.recover-password', ['link' => 'customer.auth.forgot-password'])

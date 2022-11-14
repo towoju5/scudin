@@ -1,0 +1,1 @@
+@include('auth.login', ['login' => 'admin.auth.login', 'register' => '', 'reset' => ''])

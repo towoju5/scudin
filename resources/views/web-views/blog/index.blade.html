@@ -1,0 +1,53 @@
+@extends('layouts.home.app')
+
+@section('title', 'Blog Post')
+
+@section('content')
+<section class="main-container col2-left-layout bounceInUp animated">
+   <div class="container">
+      <div class="row">
+         <div class="col-main product-grid">
+            <div class="pro-coloumn">
+               <article class="col-main">
+                  <div class="category-products" id="ajax-products">
+
+                     <div class="card-group">
+                        <div class="row">
+                           @forelse($posts as $post)
+                           <div class="col-md-3">
+                              <div class="card">
+                                 <img class="card-img-top" src="{{ $post->image }}" style="width:300px; height: 250px" alt="{{$post->title}}">
+                                 <div class="card-body text-center">
+                                    <a href="{{route('blog.show', $post->slug)}}" title="{{$post->title}}">
+                                       <h5 class="card-title">{{$post->title}}</h5>
+                                    </a>
+                                    <div class="border-bottom">
+                                       {{ ucwords($post->name) }}
+                                    </div>
+                                    <p class="card-text">
+                                       <small class="text-muted">{!! ucwords(reading_time($post->body)) !!}</small>
+                                    </p>
+                                 </div>
+                              </div>
+                           </div>
+                           @empty
+                           <p class="mt-5 text-center h3">No Blog Post Found!</p>
+                           @endforelse
+                        </div>
+                     </div>
+                  </div>
+                  <div class="toolbar">
+                     <div class="pager">
+                        <div class="pages">
+                           {!! $posts->render('pagination') !!}
+                        </div>
+                     </div>
+                  </div>
+               </article>
+            </div>
+         </div>
+
+      </div>
+   </div>
+</section>
+@endsection

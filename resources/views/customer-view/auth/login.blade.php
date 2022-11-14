@@ -1,0 +1,1 @@
+@include('auth.login', ['login' => 'customer.auth.login', 'register' => 'customer.auth.register', 'reset' => 'customer.auth.recover-password', 'social' => 1])

@@ -1,0 +1,1 @@
+@include('auth.login', ['login' => 'seller.auth.login', 'register' => 'shop.apply', 'reset' => '', 'social' => 0])

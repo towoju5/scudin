@@ -1,0 +1,133 @@
+@extends('layouts.backend')
+@section('title','Brand Edit')
+<style>
+    #brand-image-modal .modal-content {
+        width: 1116px !important;
+        margin-left: -264px !important;
+    }
+
+    @media(max-width:768px) {
+        #brand-image-modal .modal-content {
+            width: 698px !important;
+            margin-left: -75px !important;
+        }
+
+
+    }
+
+    @media(max-width:375px) {
+        #brand-image-modal .modal-content {
+            width: 367px !important;
+            margin-left: 0 !important;
+        }
+
+    }
+
+    @media(max-width:500px) {
+        #brand-image-modal .modal-content {
+            width: 400px !important;
+            margin-left: 0 !important;
+        }
+    }
+</style>
+@push('css_or_js')
+<link href="{{asset('assets/back-end')}}/css/select2.min.css" rel="stylesheet" />
+<link href="{{asset('assets/back-end/css/croppie.css')}}" rel="stylesheet">
+<meta name="csrf-token" content="{{ csrf_token() }}">
+@endpush
+
+@section('content')
+<div class="container-fluid">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{route('admin.dashboard')}}">Dashboard</a></li>
+            <li class="breadcrumb-item" aria-current="page">Brand Update</li>
+        </ol>
+    </nav>
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-2">
+        <h1 class="h3 mb-0 text-black-50">{{ __('brand_update')}}</h1>
+    </div>
+
+    <!-- Content Row -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <form action="{{route('admin.brand.update',[$b['id']])}}" method="post" enctype="multipart/form-data">
+                        @csrf
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="name">{{ __('name')}}</label>
+                                    <input type="text" name="name" value="{{$b['name']}}" class="form-control" id="name" placeholder="Ex : LUX">
+                                </div>
+                                <div class="form-group">
+                                    <label for="brand">{{ __('brand_logo')}}</label><br>
+                                    <div class="custom-file">
+                                        <input type="file" name="image" id="customFileUpload" class="custom-file-input" accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*">
+                                        <label class="custom-file-label" for="customFileUpload">{{__('choose')}} {{__('file')}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <center>
+                                    <img style="width: auto;border: 1px solid; border-radius: 10px; max-height:200px;" id="viewer" src="{{ asset($b->image) }}" alt="banner image" />
+                                </center>
+                            </div>
+                        </div>
+
+
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-primary">{{ __('update')}}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--modal-->
+    @include('shared-partials.image-process._image-crop-modal',['modal_id'=>'brand-image-modal','width'=>1000,'margin_left'=>'-53%'])
+    <!--modal-->
+</div>
+@endsection
+
+@push('js')
+<script src="{{asset('assets/back-end')}}/js/select2.min.js"></script>
+<script>
+    $(".js-example-theme-single").select2({
+        theme: "classic"
+    });
+
+    $(".js-example-responsive").select2({
+        width: 'resolve'
+    });
+</script>
+
+@include('shared-partials.image-process._script',[
+'id'=>'brand-image-modal',
+'height'=>400,
+'width'=>800,
+'multi_image'=>false,
+'route'=>route('image-upload')
+])
+
+<script>
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+                $('#viewer').attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    $("#customFileUpload").change(function() {
+        readURL(this);
+    });
+</script>
+@endpush
